@@ -2,26 +2,33 @@ package com.chao.summer.controller;
 
 import com.chao.summer.dao.PersonRepository;
 import com.chao.summer.entity.Person;
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "person")
+@RequestMapping("/person")
 public class PersonController {
 
     @Autowired
     private PersonRepository personRepository;
 
-    @PostMapping(path = "addPerson")
-    public void addPerson(Person person) {
-        personRepository.save(person);
+    @PostMapping("")
+    public Person addPerson(Person person) {
+
+        return personRepository.save(person);
     }
 
-    @DeleteMapping(path = "deletePerson")
-    public void deletePerson(Long id) {
-        personRepository.deleteById(id);
+    @DeleteMapping("")
+    public void deletePerson(Person person) {
+        personRepository.delete(person);
+    }
+
+    @GetMapping("")
+    public List<Person> findPerson(String name) {
+        return personRepository.findAllByName(name);
     }
 }
