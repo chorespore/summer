@@ -40,4 +40,19 @@ public class PersonController {
         Page<Person> res = personRepository.findAll(example, pageable);
         return res.getContent();
     }
+
+    @GetMapping("names")
+    public List<String> listNamesByAge(int age) {
+        return personRepository.listNamesByAge(age);
+    }
+
+    @GetMapping("count")
+    public long listNamesByAge() {
+        return personRepository.getTotalCount();
+    }
+
+    @PutMapping("age")
+    public void updateAge(long id, int age) {
+        personRepository.updateAge(id, age);
+    }
 }
