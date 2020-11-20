@@ -4,8 +4,10 @@ import com.chao.summer.dao.PersonRepository;
 import com.chao.summer.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 @RestController
@@ -54,5 +56,15 @@ public class PersonController {
     @PutMapping("age")
     public void updateAge(long id, int age) {
         personRepository.updateAge(id, age);
+    }
+
+    @GetMapping("ageunder")
+    public List<Person> ageUnder(int age) {
+        Specification<Person> specification = (Specification<Person>) (root, query, criteriaBuilder) -> {
+            Predicate predicate1 = criteriaBuilder.lessThan(root.get("age"), age);
+            query.where(predicate1);
+            return null;
+        };
+        return personRepository.findAll(specification);
     }
 }
