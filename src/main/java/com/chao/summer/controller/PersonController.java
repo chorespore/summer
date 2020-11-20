@@ -28,10 +28,10 @@ public class PersonController {
 
     @GetMapping("")
     public List<Person> findPerson(String keyword, int page, int size) {
-        Person person = new Person();
-        person.setName(keyword);
+        Person person = Person.builder()
+                .name(keyword).build();
         ExampleMatcher matcher = ExampleMatcher.matching()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("name", matcher1 -> matcher1.contains())
                 .withIgnorePaths("age");
 
         Example<Person> example = Example.of(person, matcher);
