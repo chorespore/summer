@@ -10,13 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
-    List<Person> findAllByName(String name);
-
-    @Query(value = "SELECT count(id) FROM person", nativeQuery = true)
-    long getTotalCount();
 
     @Query("select p.name from Person p where p.age=:age")
     List<String> listNamesByAge(int age);
+
+    @Query(value = "select * from person where name = :name", nativeQuery = true)
+    List<Person> findByName(String name);
+
+    @Query(value = "SELECT count(id) FROM person", nativeQuery = true)
+    long getTotalCount();
 
     @Modifying
     @Transactional

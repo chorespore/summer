@@ -46,14 +46,14 @@ public class PersonController {
         return res.getContent();
     }
 
-    @GetMapping("names")
-    public List<String> listNamesByAge(int age) {
-        return personRepository.listNamesByAge(age);
+    @GetMapping("name")
+    public List<Person> findByName(String name) {
+        return personRepository.findByName(name);
     }
 
-    @GetMapping("count")
-    public long listNamesByAge() {
-        return personRepository.getTotalCount();
+    @GetMapping("age")
+    public List<String> listNamesByAge(int age) {
+        return personRepository.listNamesByAge(age);
     }
 
     @PutMapping("age")
@@ -69,5 +69,10 @@ public class PersonController {
             return null;
         };
         return personRepository.findAll(specification);
+    }
+
+    @GetMapping("count")
+    public long listNamesByAge() {
+        return personRepository.getTotalCount();
     }
 }
