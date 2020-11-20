@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+
+    public PersonController(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @PostMapping("")
     public Person addPerson(Person person) {
