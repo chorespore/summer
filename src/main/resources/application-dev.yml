@@ -15,12 +15,12 @@ spring:
     port: 6379
     timeout: 5000ms
 
-  session:
-    store-type: redis
-    timeout: 36000s
-    redis:
-      flush-mode: on_save
-      namespace: spring:session
+#  session:
+  #    store-type: redis
+  #    timeout: 6000s
+  #    redis:
+  #      flush-mode: on_save
+  #      namespace: summer:session
 
   liquibase:
     enabled: false

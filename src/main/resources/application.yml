@@ -4,5 +4,7 @@ spring:
 
 server:
   port: 8080
-#  servlet:
+  servlet:
+    session:
+      timeout: 6000
 #    context-path: /
