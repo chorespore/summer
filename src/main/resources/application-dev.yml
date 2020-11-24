@@ -30,7 +30,7 @@ spring:
     baseline-version: 0.1
     enabled: false
 
-logging:
-  file:
-    max-size: 128MB
-    path: C:\Workspace\log
+#logging:
+#  file:
+#    max-size: 128MB
+#    path: C:\Workspace\log
