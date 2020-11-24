@@ -15,7 +15,7 @@ spring:
     port: 6379
     timeout: 5000ms
 
-#  session:
+  #  session:
   #    store-type: redis
   #    timeout: 6000s
   #    redis:
@@ -29,3 +29,8 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0.1
     enabled: false
+
+logging:
+  file:
+    max-size: 128MB
+    path: C:\Workspace\log

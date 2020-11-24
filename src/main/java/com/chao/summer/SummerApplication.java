@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
-@EnableRedisHttpSession(redisNamespace = "summer:session", maxInactiveIntervalInSeconds = 86400)
+@EnableRedisHttpSession(redisNamespace = "summer:session", maxInactiveIntervalInSeconds = 864000)
 public class SummerApplication {
 
     public static void main(String[] args) {
