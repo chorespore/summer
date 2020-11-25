@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-//    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({SummerException.class})
     public String handleSummerException(Exception e) {
         log.error("Summer Exception: ", e);
         return "testArrayIndexOutOfBoundsException";
