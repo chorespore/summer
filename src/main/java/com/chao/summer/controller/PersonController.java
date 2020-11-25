@@ -65,7 +65,6 @@ public class PersonController {
     public List<Person> ageUnder(int age) {
         if (age < 0) {
             throw new ValidationException("Age cannot be negtive");
-//            throw new NotLoginException();
         }
         Specification<Person> specification = (Specification<Person>) (root, query, criteriaBuilder) -> {
             Predicate predicate1 = criteriaBuilder.lessThan(root.get("age"), age);
