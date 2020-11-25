@@ -68,8 +68,10 @@ public class PersonController {
         }
         Specification<Person> specification = (Specification<Person>) (root, query, criteriaBuilder) -> {
             Predicate predicate1 = criteriaBuilder.lessThan(root.get("age"), age);
-            query.where(predicate1);
-            return null;
+            Predicate predicate2 = criteriaBuilder.like(root.get("name"), "A%");
+            Predicate or=criteriaBuilder.or(predicate1, predicate2);
+//            query.where(predicate1);
+            return or;
         };
         return personRepository.findAll(specification);
     }
