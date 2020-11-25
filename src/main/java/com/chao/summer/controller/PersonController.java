@@ -2,7 +2,7 @@ package com.chao.summer.controller;
 
 import com.chao.summer.dao.PersonRepository;
 import com.chao.summer.entity.Person;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.chao.summer.exception.ValidationException;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +63,10 @@ public class PersonController {
 
     @GetMapping("ageunder")
     public List<Person> ageUnder(int age) {
+        if (age < 0) {
+            throw new ValidationException("Age cannot be negtive");
+//            throw new NotLoginException();
+        }
         Specification<Person> specification = (Specification<Person>) (root, query, criteriaBuilder) -> {
             Predicate predicate1 = criteriaBuilder.lessThan(root.get("age"), age);
             query.where(predicate1);
