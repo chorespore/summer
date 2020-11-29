@@ -1,4 +1,4 @@
-package com.chao.summer.entity;
+package com.chao.summer.http;
 
 public enum ResponseCode {
     SUCCESS(0, "SUCCESS"),

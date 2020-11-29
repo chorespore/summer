@@ -1,4 +1,4 @@
-package com.chao.summer.entity;
+package com.chao.summer.http;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
