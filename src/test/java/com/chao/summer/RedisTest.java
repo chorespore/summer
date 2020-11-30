@@ -25,8 +25,7 @@ public class RedisTest {
         redis.opsForHash().put("HashKey", "k3", "HashVaue2");
         HashOperations hashOps = redis.opsForHash();
         hashOps.put("HashKey", "k4", "HashVaue3");
-        boundHashOperations.expire(1, TimeUnit.MINUTES);
-        Map entries = boundHashOperations.entries();
+        boundHashOperations.expire(1, TimeUnit.HOURS);
 
 
         //1、通过redisTemplate设置值
