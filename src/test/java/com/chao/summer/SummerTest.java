@@ -4,7 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.util.Pair;
 
 import java.sql.Timestamp;
+import java.time.*;
 import java.util.*;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class SummerTest {
@@ -101,4 +105,73 @@ public class SummerTest {
         HashMap<String, String> userCache1 = new HashMap<>(16);
         ArrayList<String> users = new ArrayList(10);
     }
+
+    @Test
+    void threadFactoryTest() {
+        class UserThreadFactory implements ThreadFactory {
+            private final String namePrefix;
+            private final AtomicInteger nextId = new AtomicInteger(1);
+
+            // 定义线程组名称，在 jstack 问题排查时，非常有帮助
+            UserThreadFactory(String whatFeaturOfGroup) {
+                namePrefix = "From UserThreadFactory's " + whatFeaturOfGroup + "-Worker-";
+            }
+
+            @Override
+            public Thread newThread(Runnable task) {
+                String name = namePrefix + nextId.getAndIncrement();
+                Thread thread = new Thread(null, task, name, 0, false);
+                System.out.println(thread.getName());
+                return thread;
+            }
+        }
+
+        Thread thread = new UserThreadFactory("threadFactoryTest")
+                .newThread(() -> System.out.println("new thread running..."));
+
+        thread.run();
+    }
+
+    @Test
+    void instanceTest() {
+        ZonedDateTime instant = Instant.now().atZone(ZoneId.systemDefault());
+        System.out.println("Now: " + instant);
+        int daysOfYear = LocalDate.now().lengthOfYear();
+        System.out.println("Days of one year: " + daysOfYear);
+        System.out.println("Days of 2021: " + LocalDate.of(2021, 1, 1).lengthOfYear());
+        ZonedDateTime later = instant.plusSeconds(TimeUnit.DAYS.toSeconds(daysOfYear));
+        System.out.println("One year later: " + later);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+//        DateTimeFormatter
+
+        Long nonoTime = System.nanoTime();
+        System.out.println(nonoTime);
+    }
+
+    @Test
+    void enumTest() {
+        System.out.println(SeasonEnum.SUMMER);
+        System.out.println(SeasonEnum.SUMMER.getMessage());
+    }
+
+    enum SeasonEnum {
+        SPRING("春天"), SUMMER("夏天"), AUTUMN("秋天"), WINTER("冬天");
+        private String message;
+
+        SeasonEnum(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
 }
+
+
+
+
+
+
