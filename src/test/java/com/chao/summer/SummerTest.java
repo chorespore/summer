@@ -1,7 +1,7 @@
 package com.chao.summer;
 
-import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.util.Pair;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -18,12 +18,12 @@ public class SummerTest {
     @Test
     void streamTest() {
         List<Pair<String, Double>> pairArrayList = new ArrayList<>(3);
-        pairArrayList.add(new Pair<>("version", 6.19));
-        pairArrayList.add(new Pair<>("version", 10.24));
-        pairArrayList.add(new Pair<>("version", 13.14));
+        pairArrayList.add(Pair.of("version", 6.19));
+        pairArrayList.add(Pair.of("version", 10.24));
+        pairArrayList.add(Pair.of("version", 13.14));
         Map<String, Double> map = pairArrayList.stream().collect(
                 // 生成的 map 集合中只有一个键值对：{version=13.14}
-                Collectors.toMap(Pair::getKey, Pair::getValue, (v1, v2) -> v1));
+                Collectors.toMap(Pair::getFirst, Pair::getSecond, (v1, v2) -> v2));
         System.out.println(map);
 
         String[] departments = new String[]{"iERP", "iERP", "EIBU"};
