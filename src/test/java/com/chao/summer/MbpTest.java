@@ -23,6 +23,9 @@ public class MbpTest {
         List<User> userList = userMapper.selectList(null);
         Assert.assertEquals(5, userList.size());
         userList.forEach(System.out::println);
+
+        User user = userMapper.selectById(2);
+        System.out.println(user);
     }
 }
 
