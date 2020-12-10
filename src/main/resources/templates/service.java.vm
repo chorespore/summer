@@ -1,0 +1,18 @@
+package $!table.get("basePackage") .service;
+
+import cn.cmcc.onecity.bc.commons.call.CommonResponse;
+import cn.cmcc.onecity.bc.commons.mvc.BaseService;
+import $!table.get("basePackage") .entity.vo.${table.entityName}Query;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+* @author elvin
+* @description ${table.entityName}Service 接口类
+*/
+public interface ${table.entityName}Service extends BaseService{
+
+    CommonResponse saveOrEdit(${table.entityName}Query query, HttpServletRequest request, HttpServletResponse response);
+
+}
