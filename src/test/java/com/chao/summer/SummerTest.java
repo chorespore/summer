@@ -155,6 +155,17 @@ public class SummerTest {
         System.out.println(SeasonEnum.SUMMER.getMessage());
     }
 
+    @Test
+    void assertTest() {
+        boolean isOk = 1 > 2;
+        try {
+            assert isOk : "程序错误";
+            System.out.println("程序正常");
+        } catch (AssertionError err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
     enum SeasonEnum {
         SPRING("春天"), SUMMER("夏天"), AUTUMN("秋天"), WINTER("冬天");
         private String message;
