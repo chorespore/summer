@@ -4,16 +4,19 @@ package com.chao.summer.controller;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chao.summer.entity.User;
 import com.chao.summer.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -55,7 +58,7 @@ public class UserController {
         return page;
     }
 
-    @RequestMapping("select")
+    @GetMapping("select")
     public IPage<User> select(Integer age, Integer p, Integer size) {
         IPage<User> page = userService.selectPage(new Page<>(p, size), age);
         return page;
@@ -88,6 +91,22 @@ public class UserController {
 
     @PostMapping("")
     public boolean create(@RequestBody User user) {
+        User activeUser = new User();
+        BeanUtils.copyProperties(user, activeUser);
+        activeUser.setId(activeUser.getId() + 1);
+        activeUser.setName(activeUser.getName() + " Active");
+        activeUser.setAge(user.getAge() - 1);
+        activeUser.insertOrUpdate();
+
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(User::getAge, user.getAge())
+                .set(User::getAge, user.getAge() + 1)
+                .setSql("email='update@chao.com'");
+
+        User userToUpdate = new User();
+        userToUpdate.setName(UUID.randomUUID().toString().substring(1, 6));
+        userToUpdate.update(updateWrapper);
+
         return userService.saveOrUpdate(user);
     }
 
