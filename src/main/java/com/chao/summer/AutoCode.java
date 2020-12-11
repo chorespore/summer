@@ -67,12 +67,12 @@ public class AutoCode {
 
         //指定自定义模板路径, 位置：/resources/templates/entity2.java.ftl(或者是.vm)
         //注意不要带上.ftl(或者是.vm), 会根据使用的模板引擎自动识别
-        TemplateConfig templateConfig = new TemplateConfig();
+        /*TemplateConfig templateConfig = new TemplateConfig();
         templateConfig.setController("templates/controller.java")
                 .setService("templates/service.java")
                 .setServiceImpl("templates/serviceImpl.java");
         mpg.setTemplate(templateConfig);
-
+*/
         mpg.execute(); //执行
     }
 }
