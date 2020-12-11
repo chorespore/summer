@@ -29,6 +29,8 @@ spring:
       ddl-auto: update
     show-sql: true
 
+
+
   redis:
     host: rock.chao.com
     port: 6379
@@ -46,6 +48,10 @@ spring:
     baseline-version: 0.1
     enabled: true
 
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #logging:
 #  file:

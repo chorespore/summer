@@ -1,12 +1,19 @@
 package com.chao.summer.controller;
 
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chao.summer.entity.User;
 import com.chao.summer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,9 +31,10 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    public User findById(Long id) {
-        User user = userService.getById(id);
-        System.out.println(user);
+    public Map<String, Object> findById(Long id) {
+        QueryWrapper<User> query = new QueryWrapper<>();
+        query.eq("id", id);
+        Map<String, Object> user = userService.getMap(query);
         return user;
     }
 
@@ -37,11 +45,56 @@ public class UserController {
         return users;
     }
 
+    @GetMapping("page")
+    public IPage<User> pageList(Integer p, Integer size) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.lt(User::getAge, 40);
+        IPage<User> page = userService.page(new Page<>(p, size), queryWrapper);
+        IPage<Map<String, Object>> pageMaps = userService.pageMaps(new Page<>(p, size), queryWrapper);
+        System.out.println(JSONUtils.toJSONString(pageMaps.getRecords()));
+        return page;
+    }
+
+    @RequestMapping("select")
+    public IPage<User> select(Integer age, Integer p, Integer size) {
+        IPage<User> page = userService.selectPage(new Page<>(p, size), age);
+        return page;
+    }
+
+    @GetMapping("name")
+    public List<User> findByName(String name) {
+        List<User> users = userService.lambdaQuery()
+                .like(User::getName, name)
+                .list();
+        return users;
+    }
+
+    @GetMapping("young")
+    public List<User> findYoung() {
+        return userService.getAllYoungPeople();
+    }
+
+    @GetMapping("age")
+    public List<User> findByAge(Integer age) {
+        LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
+        query.ge(User::getAge, age - 5)
+                .lt(User::getAge, age + 5);
+
+        List<Integer> userId = userService.listObjs(query, o -> Integer.parseInt(o.toString()));
+        System.out.println(userId);
+        List<User> users = userService.list(query);
+        return users;
+    }
+
     @PostMapping("")
     public boolean create(@RequestBody User user) {
         return userService.saveOrUpdate(user);
     }
 
+    @DeleteMapping("")
+    public boolean delete(@RequestBody String[] ids) {
+        return userService.removeByIds(Arrays.asList(ids));
+    }
 
 }
 
