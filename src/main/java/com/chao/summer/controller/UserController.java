@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chao.summer.entity.User;
 import com.chao.summer.service.UserService;
@@ -109,6 +110,27 @@ public class UserController {
 
         return userService.saveOrUpdate(user);
     }
+
+
+    @PostMapping("update")
+    public boolean update(@RequestBody User user) {
+        new LambdaUpdateChainWrapper<>(userService.getBaseMapper())
+                .like(User::getName, "ha")
+                .lt(User::getAge, 40)
+                .set(User::getEmail, "8888")
+                .set(User::getAge, 88)
+                .update();
+
+        User userInfo = new User();
+        userInfo.setEmail("8888");
+        boolean success = new LambdaUpdateChainWrapper<>(userService.getBaseMapper())
+                .like(User::getName, "ha Active")
+                .lt(User::getAge, 40)
+                .set(User::getAge, 88)
+                .update(userInfo);
+        return success;
+    }
+
 
     @DeleteMapping("")
     public boolean delete(@RequestBody String[] ids) {
