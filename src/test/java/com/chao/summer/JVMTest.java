@@ -3,6 +3,8 @@ package com.chao.summer;
 import com.chao.summer.entity.User;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class JVMTest {
 
     @Test
@@ -22,13 +24,17 @@ public class JVMTest {
     private native void start0();
 
     public static void main(String[] args) {
-        long max = Runtime.getRuntime().maxMemory();
-        long free = Runtime.getRuntime().freeMemory();
-        long totalMemory = Runtime.getRuntime().totalMemory();
+        Runtime runtime = Runtime.getRuntime();
+        long max = runtime.maxMemory();
+        long free = runtime.freeMemory();
+        long totalMemory = runtime.totalMemory();
+
+        System.out.println("Cores: " + runtime.availableProcessors());
 
         System.out.println(max / 1024.0 / 1024.0);
         System.out.println(free / 1024.0 / 1024.0);
         System.out.println(totalMemory / 1024.0 / 1024.0);
+
     }
 
 }
