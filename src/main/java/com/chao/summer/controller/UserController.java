@@ -52,7 +52,7 @@ public class UserController {
     @GetMapping("page")
     public IPage<User> pageList(Integer p, Integer size) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.lt(User::getAge, 40);
+        queryWrapper.lt(User::getAge, 40).orderByDesc(User::getAge, User::getId);
         IPage<User> page = userService.page(new Page<>(p, size), queryWrapper);
         IPage<Map<String, Object>> pageMaps = userService.pageMaps(new Page<>(p, size), queryWrapper);
         System.out.println(JSONUtils.toJSONString(pageMaps.getRecords()));
