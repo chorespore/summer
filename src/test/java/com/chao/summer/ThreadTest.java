@@ -10,6 +10,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadTest {
+
+    public static void main(String[] args) {
+//        tickTest();
+//        phoneTest();
+//        semaphoreTest();
+        readWriteLockTest();
+    }
+
     @Test
     public void timeUnitTest() {
         System.out.println("start");
@@ -86,12 +94,24 @@ public class ThreadTest {
         }
     }
 
-    public static void main(String[] args) {
-        tickTest();
-        phoneTest();
-        semaphoreTest();
-    }
 
+    public static void readWriteLockTest() {
+        CacheLock cache = new CacheLock();
+        for (int i = 0; i < 6; i++) {
+            String finalI = "T" + i;
+            new Thread(() -> {
+                cache.put("key", finalI);
+            }).start();
+        }
+
+        for (int i = 0; i < 6; i++) {
+            String finalI = "key";
+            new Thread(() -> {
+                cache.get(finalI);
+//                System.out.println(cache.get(finalI));
+            }).start();
+        }
+    }
 
     public static void phoneTest() {
         Phone phone = new Phone();
@@ -125,6 +145,37 @@ public class ThreadTest {
     }
 }
 
+class CacheLock {
+    private volatile Map<String, Object> map = new HashMap<>();
+    private final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
+    final Lock readLock = reentrantReadWriteLock.readLock();
+    final Lock writeLock = reentrantReadWriteLock.writeLock();
+
+    public void put(String key, Object value) {
+        writeLock.lock();
+        try {
+            System.out.println(Thread.currentThread().getName() + " Write... " + key);
+            map.put(key, value);
+            System.out.println(Thread.currentThread().getName() + " Write Complete");
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    public Object get(String key) {
+        readLock.lock();
+        try {
+            System.out.println(Thread.currentThread().getName() + " Read... " + key);
+            Object obj = map.get(key);
+            System.out.println(obj);
+            System.out.println(Thread.currentThread().getName() + " Read Complete");
+            return obj;
+        } finally {
+            readLock.unlock();
+        }
+    }
+}
+
 
 class Phone {
     public static synchronized void call() {
@@ -148,10 +199,6 @@ class Tick {
     private Condition condition1 = lock.newCondition();
     private Condition condition3 = lock.newCondition();
     private Condition condition2 = lock.newCondition();
-    private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
-    Lock readLock = reentrantReadWriteLock.readLock();
-    Lock writeLock = reentrantReadWriteLock.writeLock();
-
 
     public void printA() {
         lock.lock();
