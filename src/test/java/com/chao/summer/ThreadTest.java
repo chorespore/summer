@@ -2,7 +2,8 @@ package com.chao.summer;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -20,7 +21,91 @@ public class ThreadTest {
         System.out.println("ok");
     }
 
+
+    @Test
+    public void countUpTest() {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(7, () -> System.out.println("召唤神龙！"));
+        for (int i = 0; i < 7; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + " get ball" + finalI);
+                try {
+                    cyclicBarrier.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }, "T" + i).start();
+        }
+    }
+
+    @Test
+    public void countDownTest() throws InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(6);
+
+        for (int i = 0; i <= 6; i++) {
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + " left");
+                countDownLatch.countDown();
+            }, "Student-" + i).start();
+        }
+
+        countDownLatch.await();
+        System.out.println("Door closed");
+    }
+
+    public static void semaphoreTest() {//并发限流
+        Semaphore semaphore = new Semaphore(3);
+        for (int i = 0; i < 6; i++) {
+            new Thread(() -> {
+                try {
+                    semaphore.acquire();
+                    System.out.println(Thread.currentThread().getName() + " in");
+                    TimeUnit.SECONDS.sleep(3);
+                    System.out.println(Thread.currentThread().getName() + " left");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    semaphore.release();
+                }
+            }).start();
+        }
+    }
+
+    @Test
+    public void listTest() {
+        List<String> list = new CopyOnWriteArrayList<>();
+        List<String> list1 = new Vector<>();
+        List<String> list2 = Collections.synchronizedList(new ArrayList<>());
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                list.add(UUID.randomUUID().toString().replace("-", ""));
+                System.out.println(list);
+            }, "T" + i).start();
+        }
+    }
+
     public static void main(String[] args) {
+        tickTest();
+        phoneTest();
+        semaphoreTest();
+    }
+
+
+    public static void phoneTest() {
+        Phone phone = new Phone();
+        new Thread(() -> phone.call(), "P-A").start();
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        new Thread(() -> phone.message(), "P-B").start();
+
+    }
+
+    public static void tickTest() {
         Tick tick = new Tick();
         new Thread(() -> {
             for (int i = 0; i < 5; i++) {
@@ -37,16 +122,6 @@ public class ThreadTest {
                 tick.printC();
             }
         }, "C").start();
-
-
-        Phone phone = new Phone();
-        new Thread(() -> phone.call(), "P-A").start();
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new Thread(() -> phone.message(), "P-B").start();
     }
 }
 
@@ -54,7 +129,7 @@ public class ThreadTest {
 class Phone {
     public static synchronized void call() {
         try {
-            TimeUnit.SECONDS.sleep(8);
+            TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -92,7 +167,6 @@ class Tick {
         } finally {
             lock.unlock();
         }
-
     }
 
     public void printB() {
@@ -109,7 +183,6 @@ class Tick {
         } finally {
             lock.unlock();
         }
-
     }
 
     public void printC() {
@@ -126,7 +199,5 @@ class Tick {
         } finally {
             lock.unlock();
         }
-
     }
-
 }
