@@ -15,52 +15,68 @@ public class ThreadTest {
 //        tickTest();
 //        phoneTest();
 //        semaphoreTest();
-        readWriteLockTest();
-    }
-
-    @Test
-    public void timeUnitTest() {
-        System.out.println("start");
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("ok");
+//        readWriteLockTest();
+        blockingQueueTest();
     }
 
 
-    @Test
-    public void countUpTest() {
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(7, () -> System.out.println("召唤神龙！"));
-        for (int i = 0; i < 7; i++) {
-            int finalI = i;
-            new Thread(() -> {
-                System.out.println(Thread.currentThread().getName() + " get ball" + finalI);
-                try {
-                    cyclicBarrier.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (BrokenBarrierException e) {
-                    e.printStackTrace();
-                }
-            }, "T" + i).start();
+    public static void blockingQueueTest() {//并发限流
+        BlockingQueue queue = new ArrayBlockingQueue<Integer>(2);
+        for (int i = 0; i < 3; i++) {
+            System.out.println(queue.offer(i));
         }
-    }
-
-    @Test
-    public void countDownTest() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(6);
-
-        for (int i = 0; i <= 6; i++) {
-            new Thread(() -> {
-                System.out.println(Thread.currentThread().getName() + " left");
-                countDownLatch.countDown();
-            }, "Student-" + i).start();
+        for (int i = 0; i < 3; i++) {
+            System.out.println(queue.poll());
         }
 
-        countDownLatch.await();
-        System.out.println("Door closed");
+        System.out.println("Timeout => ");
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                System.out.println(queue.offer(i, 1, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            try {
+                System.out.println(queue.poll(1, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                queue.add(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                queue.remove();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                queue.put(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void semaphoreTest() {//并发限流
@@ -142,6 +158,52 @@ public class ThreadTest {
                 tick.printC();
             }
         }, "C").start();
+    }
+
+
+    @Test
+    public void timeUnitTest() {
+        System.out.println("start");
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("ok");
+    }
+
+
+    @Test
+    public void countUpTest() {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(7, () -> System.out.println("召唤神龙！"));
+        for (int i = 0; i < 7; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + " get ball" + finalI);
+                try {
+                    cyclicBarrier.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }, "T" + i).start();
+        }
+    }
+
+    @Test
+    public void countDownTest() throws InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(6);
+
+        for (int i = 0; i <= 6; i++) {
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + " left");
+                countDownLatch.countDown();
+            }, "Student-" + i).start();
+        }
+
+        countDownLatch.await();
+        System.out.println("Door closed");
     }
 }
 
