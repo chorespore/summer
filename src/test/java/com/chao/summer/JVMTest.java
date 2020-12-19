@@ -18,7 +18,6 @@ public class JVMTest {
         System.out.println(classLoaderParent);
         ClassLoader classLoaderGrandParent = classLoaderParent.getParent();
         System.out.println(classLoaderGrandParent);
-
     }
 
     private native void start0();

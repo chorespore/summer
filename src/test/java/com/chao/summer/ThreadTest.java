@@ -22,6 +22,7 @@ public class ThreadTest {
 
     public static void blockingQueueTest() {//并发限流
         BlockingQueue queue = new ArrayBlockingQueue<Integer>(2);
+
         for (int i = 0; i < 3; i++) {
             System.out.println(queue.offer(i));
         }
@@ -46,6 +47,7 @@ public class ThreadTest {
             }
         }
 
+        //FIXME
         for (int i = 0; i < 3; i++) {
             try {
                 queue.add(i);
@@ -95,6 +97,62 @@ public class ThreadTest {
                 }
             }).start();
         }
+    }
+
+    /**
+     * 3大方法，7大参数，4种拒绝策略
+     */
+    @Test
+    public void pollTest() {
+        ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+        ExecutorService myThreadPool = new ThreadPoolExecutor(2, 5,
+                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3), new ThreadPoolExecutor.AbortPolicy());
+//        new ThreadPoolExecutor.AbortPolicy()
+//        new ThreadPoolExecutor.CallerRunsPolicy()
+//        new ThreadPoolExecutor.DiscardPolicy()
+//        new ThreadPoolExecutor.DiscardOldestPolicy()
+        try {
+            for (int i = 0; i < 9; i++) {
+                myThreadPool.submit(() -> {
+                    System.out.println(Thread.currentThread().getName());
+                });
+            }
+        } finally {
+            myThreadPool.shutdown();
+        }
+    }
+
+    @Test
+    public void useSynchronousQueue() throws InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        SynchronousQueue<Object> synchronousQueue = new SynchronousQueue<>();
+
+        Runnable producer = () -> {
+            String object = "signal";
+            try {
+                System.out.println("produced {}" + object);
+                synchronousQueue.put(object);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+
+        Runnable consumer = () -> {
+            try {
+                Object object = synchronousQueue.take();
+                System.out.println("consumed {}" + object);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+
+        executor.submit(producer);
+        executor.submit(consumer);
+
+        executor.awaitTermination(5, TimeUnit.SECONDS);
+        executor.shutdown();
     }
 
     @Test
