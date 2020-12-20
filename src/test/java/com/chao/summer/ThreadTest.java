@@ -104,8 +104,13 @@ public class ThreadTest {
      */
     @Test
     public void pollTest() {
+        // 允许的请求队列workQueue长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
         ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+
+        // 允许的请求队列workQueue长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
+
+        // 允许的创建线程数量maximumPoolSize为 Integer.MAX_VALUE， 可能会创建大量的线程，从而导致 OOM。
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
         ExecutorService myThreadPool = new ThreadPoolExecutor(2, 5,
                 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3), new ThreadPoolExecutor.AbortPolicy());
