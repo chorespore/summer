@@ -35,6 +35,24 @@ public class SpinLockTest {
             }
         }).start();
 
+
+        Thread daemonThread = new Thread(() -> {
+            while (true) {
+                System.out.println("daemonThread activeCount: " + Thread.activeCount());
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        daemonThread.setDaemon(true);
+        daemonThread.start();
+        TimeUnit.SECONDS.sleep(1);
+        System.out.println("activeCount: " + Thread.activeCount());
+
+
     }
 }
 
@@ -55,5 +73,4 @@ class SpinLock {
         while (lockThread.compareAndSet(thread, null)) {
         }
     }
-
 }
