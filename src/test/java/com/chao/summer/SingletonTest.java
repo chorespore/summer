@@ -18,4 +18,34 @@ public class SingletonTest {
         }
         return instance;
     }
+
+    public static void main(String[] args) {
+        enumSingleton.INSTANCE.go();
+    }
+
+
+}
+
+
+enum enumSingleton {
+    INSTANCE;
+
+    public void go() {
+        System.out.println("go");
+    }
+}
+
+class Singleton {
+    // 构造器私有化
+    private Singleton() {
+    }
+
+    private static class SingletonHolder {
+        private static Singleton instance = new Singleton();
+    }
+
+
+    public static Singleton getInstance() {
+        return SingletonHolder.instance;
+    }
 }
