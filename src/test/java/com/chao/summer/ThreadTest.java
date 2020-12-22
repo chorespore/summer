@@ -22,7 +22,9 @@ public class ThreadTest {
 
     public static void unsafeListTest() {
         List<String> list = new ArrayList<>();
+        List<String> synchronizedList = Collections.synchronizedList(new ArrayList<>());
         List<String> unsafeList = new ArrayList<>();
+        List<String> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
         for (int i = 0; i < 1000; i++) {
             new Thread(() -> {
                 try {
@@ -31,6 +33,8 @@ public class ThreadTest {
                     e.printStackTrace();
                 }
                 unsafeList.add(Thread.currentThread().getName());
+                synchronizedList.add(Thread.currentThread().getName());
+                copyOnWriteArrayList.add(Thread.currentThread().getName());
                 synchronized (list) {
                     list.add(Thread.currentThread().getName());
                 }
@@ -40,8 +44,10 @@ public class ThreadTest {
         while (Thread.activeCount() > 1) {
             Thread.yield();
         }
-        System.out.println(list.size());
-        System.out.println(unsafeList.size());
+        System.out.println("copyOnWriteArrayList:" + copyOnWriteArrayList.size());
+        System.out.println("synchronized block ArrayList:" + list.size());
+        System.out.println("synchronizedList:" + synchronizedList.size());
+        System.out.println("ArrayList:" + unsafeList.size());
     }
 
     public static void blockingQueueTest() {//并发限流
