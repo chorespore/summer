@@ -7,8 +7,13 @@ public class StaticProxyTest {
     }
 }
 
+@FunctionalInterface
 interface Marry {
-    void marry();
+    public abstract void marry();
+
+    public default void amarry() {
+
+    }
 }
 
 class You implements Marry {
