@@ -22,14 +22,18 @@ public class ThreadTest {
 
     public static void unsafeListTest() {
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
+        List<String> unsafeList = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
             new Thread(() -> {
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                list.add(Thread.currentThread().getName());
+                unsafeList.add(Thread.currentThread().getName());
+                synchronized (list) {
+                    list.add(Thread.currentThread().getName());
+                }
 
             }).start();
         }
@@ -37,6 +41,7 @@ public class ThreadTest {
             Thread.yield();
         }
         System.out.println(list.size());
+        System.out.println(unsafeList.size());
     }
 
     public static void blockingQueueTest() {//并发限流
