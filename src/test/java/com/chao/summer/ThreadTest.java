@@ -16,9 +16,28 @@ public class ThreadTest {
 //        phoneTest();
 //        semaphoreTest();
 //        readWriteLockTest();
-        blockingQueueTest();
+//        blockingQueueTest();
+        unsafeListTest();
     }
 
+    public static void unsafeListTest() {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            new Thread(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                list.add(Thread.currentThread().getName());
+
+            }).start();
+        }
+        while (Thread.activeCount() > 1) {
+            Thread.yield();
+        }
+        System.out.println(list.size());
+    }
 
     public static void blockingQueueTest() {//并发限流
         BlockingQueue queue = new ArrayBlockingQueue<Integer>(2);
@@ -172,7 +191,6 @@ public class ThreadTest {
             }, "T" + i).start();
         }
     }
-
 
     public static void readWriteLockTest() {
         CacheLock cache = new CacheLock();
