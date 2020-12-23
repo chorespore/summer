@@ -11,13 +11,36 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ThreadTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 //        tickTest();
 //        phoneTest();
 //        semaphoreTest();
 //        readWriteLockTest();
 //        blockingQueueTest();
-        unsafeListTest();
+//        unsafeListTest();
+        callableTest();
+
+    }
+
+    public static void callableTest() throws ExecutionException, InterruptedException {
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
+        Callable callable = (Callable<String>) () -> "Solution1:" + UUID.randomUUID().toString();
+
+        FutureTask<String> futureTask1 = new FutureTask<>(callable);
+        FutureTask<String> futureTask2 = new FutureTask<>(() -> "Solution2:" + UUID.randomUUID().toString());
+        FutureTask<String> futureTask3 = new FutureTask<>(() -> "Solution3:" + UUID.randomUUID().toString());
+
+        new Thread(futureTask1).start();
+        fixedThreadPool.execute(futureTask2);
+        Future<String> submit = fixedThreadPool.submit(futureTask3, "ss");
+
+        System.out.println(futureTask1.get());
+        System.out.println(futureTask2.get());
+        System.out.println(futureTask3.get());
+        // submit() 的返回值 Future 调用get方法时，可以捕获处理异常
+        System.out.println(submit.get());
+
+        fixedThreadPool.shutdown();
     }
 
     public static void unsafeListTest() {
