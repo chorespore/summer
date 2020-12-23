@@ -11,7 +11,12 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 public class SummerApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(SummerApplication.class, args);
+
+        // 变更配置文件读取位置启动
+/*        new SpringApplicationBuilder(SpringbootConfigApplication.class)
+                .properties("spring.config.location=classpath:/springbootconfig.yml").run(args);*/
     }
 
 }
