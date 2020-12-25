@@ -18,7 +18,8 @@ public class ThreadTest {
 //        readWriteLockTest();
 //        blockingQueueTest();
 //        unsafeListTest();
-        callableTest();
+//        callableTest();
+        pollTest();
 
     }
 
@@ -155,8 +156,7 @@ public class ThreadTest {
     /**
      * 3大方法，7大参数，4种拒绝策略
      */
-    @Test
-    public void pollTest() {
+    public static void pollTest() {
         // 允许的请求队列workQueue长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
         ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
 
@@ -165,6 +165,32 @@ public class ThreadTest {
 
         // 允许的创建线程数量maximumPoolSize为 Integer.MAX_VALUE， 可能会创建大量的线程，从而导致 OOM。
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(8);
+
+        /**
+         * scheduleAtFixedRate
+         * period：连续执行任务之间的周期，从上一个任务开始执行时计算延迟多少开始执行下一个任务，但是还会等上一个任务结束之后。
+         */
+
+        /**
+         * scheduleWithFixedDelay
+         * period：连续执行任务之间的周期，从上一个任务全部执行完成时计算延迟多少开始执行下一个任务
+         */
+
+        scheduledExecutorService.scheduleAtFixedRate(() -> System.out.println(Thread.currentThread().getName()), 1, 1, TimeUnit.SECONDS);
+        ScheduledFuture<String> scheduledFuture2 = scheduledExecutorService.schedule(() -> "call-2", 2, TimeUnit.SECONDS);
+
+        try {
+            System.out.println(scheduledFuture2.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } /*finally {
+
+        }*/
+
         ExecutorService myThreadPool = new ThreadPoolExecutor(2, 5,
                 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3), new ThreadPoolExecutor.AbortPolicy());
 //        new ThreadPoolExecutor.AbortPolicy()
@@ -179,6 +205,7 @@ public class ThreadTest {
             }
         } finally {
             myThreadPool.shutdown();
+//            scheduledExecutorService.shutdown();
         }
     }
 
