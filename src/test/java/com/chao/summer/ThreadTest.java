@@ -1,6 +1,7 @@
 package com.chao.summer;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -19,7 +20,7 @@ public class ThreadTest {
 //        blockingQueueTest();
 //        unsafeListTest();
 //        callableTest();
-        pollTest();
+        poolTest();
 
     }
 
@@ -156,7 +157,7 @@ public class ThreadTest {
     /**
      * 3大方法，7大参数，4种拒绝策略
      */
-    public static void pollTest() {
+    public static void poolTest() {
         // 允许的请求队列workQueue长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。
         ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
 
@@ -191,8 +192,11 @@ public class ThreadTest {
 
         }*/
 
+        ThreadFactory summerThreadFactory = new CustomizableThreadFactory("summerThread-pool-");
+
         ExecutorService myThreadPool = new ThreadPoolExecutor(2, 5,
-                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3), new ThreadPoolExecutor.AbortPolicy());
+                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3),
+                summerThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 //        new ThreadPoolExecutor.AbortPolicy()
 //        new ThreadPoolExecutor.CallerRunsPolicy()
 //        new ThreadPoolExecutor.DiscardPolicy()
