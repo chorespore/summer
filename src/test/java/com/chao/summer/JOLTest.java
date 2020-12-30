@@ -14,11 +14,11 @@ public class JOLTest {
         String s = "ABCDE12345678";
         System.out.println(ClassLayout.parseInstance(s).toPrintable());
 
-        long i = 8L;
+        int i = 17;
         System.out.println(ClassLayout.parseInstance(i).toPrintable());
 
-        Integer I = Integer.valueOf(8);
-        System.out.println(ClassLayout.parseInstance(I).toPrintable());
+        int[] arr = {2,4};
+        System.out.println(ClassLayout.parseInstance(arr).toPrintable());
 
         class User {
             boolean name;
