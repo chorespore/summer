@@ -64,8 +64,8 @@ public class SummerTest {
         List notGenerics = new ArrayList(10);
         notGenerics.add(new Object());
         notGenerics.add(true);
-        notGenerics.add(new Integer(1));
-        notGenerics.add(new Double(2.3));
+        notGenerics.add(Integer.valueOf(1));
+        notGenerics.add(2.3);
         generics = notGenerics;
         // 此处抛出 ClassCastException 异常
         // String string = generics.get(0);

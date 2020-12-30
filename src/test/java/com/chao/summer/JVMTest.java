@@ -3,8 +3,6 @@ package com.chao.summer;
 import com.chao.summer.entity.User;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
-
 public class JVMTest {
 
     @Test
