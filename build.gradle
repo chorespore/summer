@@ -35,7 +35,7 @@ dependencies {
     implementation 'junit:junit:4.12'
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'org.openjdk.jol:jol-core:0.14'
-    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.929')
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.930')
     implementation 'com.amazonaws:aws-java-sdk-dynamodb'
     runtimeOnly 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok'
