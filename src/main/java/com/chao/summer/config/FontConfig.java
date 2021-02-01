@@ -3,6 +3,7 @@ package com.chao.summer.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 //@Configuration
+@Import({ScheduleConfig.class})
 public class FontConfig {
 
     private final ResourceLoader resourceLoader;
