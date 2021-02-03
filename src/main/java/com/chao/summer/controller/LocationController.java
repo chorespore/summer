@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("location")
-public class DirectController {
+public class LocationController {
 
     @GetMapping("f")
     public String forword() {
