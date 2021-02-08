@@ -13,6 +13,7 @@ public class RedisLockController {
 
     private final StringRedisTemplate redis;
 
+    @Autowired
     public RedisLockController(StringRedisTemplate redis) {
         this.redis = redis;
     }
@@ -21,6 +22,11 @@ public class RedisLockController {
     public String deductStock() {
         String lockKey = "product_1";
         String lockId = UUID.randomUUID().toString();
+
+
+//        RLock redissonLock = redisson.getLock(lockKey);
+//        redissonLock.lock(20, TimeUnit.SECONDS);
+
         try {
             Boolean res = redis.opsForValue().setIfAbsent(lockKey, lockId, 30, TimeUnit.SECONDS);
             if (!res) {
@@ -39,10 +45,12 @@ public class RedisLockController {
 
         } finally {
             if (lockId.equals(redis.opsForValue().get(lockKey))) {
+//                redissonLock.unlock();
                 redis.delete(lockKey);
             }
         }
 
+        return "OK";
     }
 
 }
