@@ -14,10 +14,54 @@ public class AtomicTest {
 
 //        sum();
 //        atomicSum();
-        cas();
+        // cas();
 //        pause();
+        prime()
+    }
+
+    public void prime() {
+        AtomicBoolean ok = new AtomicBoolean(false);
+        Scanner in = new Scanner(System.in);
+        System.out.print("Seach for primes whthin:");
+        int n = in.nextInt();
+        System.out.println("Seaching for primes whthin " + n + "...");
+        new Thread(() -> {
+            long start = System.currentTimeMillis();
+            while (ok.get() == false) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {}
+                long end = System.currentTimeMillis();
+                System.out.print("Time Used:" + (end - start) + "ms\r");
+            }
+        }).start();
+        find(n);
+        ok.set(true);
+        in.close();
+    }
 
 
+    public  void find(int n) {
+        long start = System.currentTimeMillis(); // 取开始时间
+        int j, num = 0;
+        boolean sgin;
+        for (int i = 2; i <= n; i++) {
+            if (i % 2 == 0 && i != 2)
+                continue; // 偶数和1排除
+            sgin = true;
+            for (j = 2; j <= Math.sqrt(i); j++) {
+                if (i % j == 0) {
+                    sgin = false;
+                    break;
+                }
+            }
+            if (sgin) { // 打印
+                num++;
+            }
+        }
+        System.out.println(n + "以内的素数有" + num + "个");
+        long end = System.currentTimeMillis();
+        System.out.println("Time Used:" + (end - start) + "ms\n");
     }
 
     public static void cas() {
