@@ -1,6 +1,8 @@
 package com.chao.summer;
 
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
@@ -16,10 +18,10 @@ public class AtomicTest {
 //        atomicSum();
         // cas();
 //        pause();
-        prime()
+        prime();
     }
 
-    public void prime() {
+    public static void prime() {
         AtomicBoolean ok = new AtomicBoolean(false);
         Scanner in = new Scanner(System.in);
         System.out.print("Seach for primes whthin:");
@@ -30,7 +32,8 @@ public class AtomicTest {
             while (ok.get() == false) {
                 try {
                     Thread.sleep(1000);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
                 long end = System.currentTimeMillis();
                 System.out.print("Time Used:" + (end - start) + "ms\r");
             }
@@ -41,7 +44,7 @@ public class AtomicTest {
     }
 
 
-    public  void find(int n) {
+    public static void find(int n) {
         long start = System.currentTimeMillis(); // 取开始时间
         int j, num = 0;
         boolean sgin;
@@ -80,7 +83,7 @@ public class AtomicTest {
         System.out.println(stampedNum.compareAndSet(106, 18, stamp, stamp + 1));
         System.out.println(stampedNum.getReference());
     }
-    
+
     public static void atomicSum() {
         for (int i = 0; i < 100; i++) {
             new Thread(() -> {

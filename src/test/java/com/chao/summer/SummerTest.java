@@ -120,7 +120,7 @@ public class SummerTest {
             @Override
             public Thread newThread(Runnable task) {
                 String name = namePrefix + nextId.getAndIncrement();
-                Thread thread = new Thread(null, task, name, 0, false);
+                Thread thread = new Thread(task, name);
                 System.out.println(thread.getName());
                 return thread;
             }
