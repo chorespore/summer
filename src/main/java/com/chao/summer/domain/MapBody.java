@@ -14,3 +14,16 @@ public class MapBody {
         private HashMap<String, String> value;
     }
 }
+
+
+/**
+ * {
+ *     "resultCode": "200",
+ *     "resultData": {
+ *         "value": {
+ *             "国籍": "中国",
+ *             "职业": "太守"
+ *         }
+ *     }
+ * }
+ */
