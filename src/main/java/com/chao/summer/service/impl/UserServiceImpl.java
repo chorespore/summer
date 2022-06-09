@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chao.summer.entity.User;
+import com.chao.summer.domain.entity.User;
 import com.chao.summer.mapper.UserMapper;
 import com.chao.summer.service.UserService;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.chao.summer.controller;
 
-import com.chao.summer.entity.WebSocketMessage;
+import com.chao.summer.domain.entity.WebSocketMessage;
 import com.chao.summer.websocket.WebSocketServer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

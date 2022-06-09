@@ -1,7 +1,7 @@
 package com.chao.summer.controller;
 
 import com.chao.summer.dao.PersonRepository;
-import com.chao.summer.entity.Person;
+import com.chao.summer.domain.entity.Person;
 import com.chao.summer.exception.ValidationException;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;

@@ -2,7 +2,7 @@ package com.chao.summer.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.chao.summer.entity.User;
+import com.chao.summer.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

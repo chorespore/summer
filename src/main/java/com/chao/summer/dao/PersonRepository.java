@@ -1,6 +1,6 @@
 package com.chao.summer.dao;
 
-import com.chao.summer.entity.Person;
+import com.chao.summer.domain.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

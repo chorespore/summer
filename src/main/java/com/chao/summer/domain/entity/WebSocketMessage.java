@@ -1,4 +1,4 @@
-package com.chao.summer.entity;
+package com.chao.summer.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

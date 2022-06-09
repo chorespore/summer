@@ -1,4 +1,4 @@
-package com.chao.summer.entity;
+package com.chao.summer.domain.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.chao.summer;
 
-import com.chao.summer.entity.User;
+import com.chao.summer.domain.entity.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
