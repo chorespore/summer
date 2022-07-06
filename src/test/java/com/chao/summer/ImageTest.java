@@ -5,11 +5,10 @@ import cn.hutool.core.io.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Base64;
 
 
@@ -26,7 +25,8 @@ public class ImageTest {
 
     @Test
     public void imgToBase64Test() throws IOException {
-        final byte[] imgBytes = getBytesByURL("https://static.www.tencent.com/uploads/2022/06/02/81715eb2fb84b6b8d5be3c1f9c154a42.png");
+//        final byte[] imgBytes = getBytesByURL("https://static.www.tencent.com/uploads/2022/06/02/81715eb2fb84b6b8d5be3c1f9c154a42.png");
+        final byte[] imgBytes = Files.readAllBytes(new File("C:\\Users\\Chao\\Desktop\\ocr\\hk2.jpg").toPath());
         String base64 = Base64.getEncoder().encodeToString(imgBytes);
         System.out.println(base64);
     }
