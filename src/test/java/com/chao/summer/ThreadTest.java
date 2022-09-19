@@ -36,7 +36,7 @@ public class ThreadTest {
                 try {
                     Thread.sleep(1000);
                     System.out.println("before notify");
-                    synchronized (currentObj) {
+                    synchronized (currentObj) { // 调用wait，notify，notifyAll等方法时，一定要持有与条件队列相关的锁
                         currentObj.notifyAll();
                     }
 //                    mainThread.interrupt();
