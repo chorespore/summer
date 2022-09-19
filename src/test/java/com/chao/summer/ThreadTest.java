@@ -21,7 +21,40 @@ public class ThreadTest {
 //        unsafeListTest();
 //        callableTest();
 //        poolTest();
-        sleepInterruptTest();
+//        sleepInterruptTest();
+
+        new WaitTest().test();
+
+    }
+
+    static class WaitTest {
+        public synchronized void test() {
+
+            Thread mainThread = Thread.currentThread();
+            WaitTest currentObj = this;
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    System.out.println("before notify");
+                    synchronized (currentObj) {
+                        currentObj.notifyAll();
+                    }
+//                    mainThread.interrupt();
+                    System.out.println("after notify");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            try {
+//                this.wait(5000);
+                this.wait();
+                System.out.println("after wait ***************************");
+            } catch (InterruptedException e) {
+//                e.printStackTrace();
+                System.out.println("InterruptedException of wait ***************************");
+            }
+        }
     }
 
     public static void sleepInterruptTest() {
@@ -40,11 +73,9 @@ public class ThreadTest {
             Thread.sleep(5000);
             System.out.println("5s ***************************");
         } catch (InterruptedException e) {
-            System.out.println("InterruptedException of 5s **********************");
+            System.out.println("InterruptedException of 5s ***************************");
 //            e.printStackTrace();
         }
-
-
     }
 
     public static void callableTest() throws ExecutionException, InterruptedException {
