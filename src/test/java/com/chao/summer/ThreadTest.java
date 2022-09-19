@@ -20,7 +20,30 @@ public class ThreadTest {
 //        blockingQueueTest();
 //        unsafeListTest();
 //        callableTest();
-        poolTest();
+//        poolTest();
+        sleepInterruptTest();
+    }
+
+    public static void sleepInterruptTest() {
+        Thread mainThread = Thread.currentThread();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainThread.interrupt();
+        }).start();
+
+        try {
+            Thread.sleep(5000);
+            System.out.println("5s ***************************");
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException of 5s **********************");
+//            e.printStackTrace();
+        }
+
 
     }
 
